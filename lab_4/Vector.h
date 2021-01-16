@@ -24,9 +24,16 @@ public:
 			for (unsigned int i = length; i < n_size; i++)
 				n_data[i] = n_element;
 		}
+		delete[] data;
+		data = n_data;
 		length = n_size;
 	}
-//this is a method for adding elements to our vector
+//method for checking if the vector is empty
+	bool empty()
+	{
+		return (length == 0) ? (true) : (false);
+	}
+//this is a method for adding elements to the end of our vector
 	void push_back(const double& n_data)
 	{
 		double* temp = new double[length + 1];
@@ -37,8 +44,67 @@ public:
 		data = temp;
 		data[length++] = n_data;
 	}
+//this is a method for adding elements at the beginning of our vector
+	void insert(const double& n_element)
+	{
+		double* temp = new double[++length];
+		std::memcpy(&temp[1], data, sizeof(double) * (length-1));
+		delete[] data;
+		data = temp;
+		data[0] = n_element;
+	}
 
+//method showing the first element of a vector
+	double front()
+	{
+		return data[0];
+	}
 
+//method showing the last element of a vector
+	double back()
+	{
+		return data[length - 1];
+	}
+//this method removes the element froim the end of a vector
+	void pop_back()
+	{
+		double* n_data = new double[--length];
+		memcpy(n_data, data, (length) * sizeof(double));
+		delete[] data;
+		data = n_data;
+	}
+
+//method for deleting an element at the specified index of a vector
+	void erase(const unsigned int& index)
+	{
+		if (index >= length)
+		{	
+			std::cout << "unable to erase at that index!" << std::endl;
+			return;
+		}
+		double* tmp = new double[length - 1];
+		memcpy(tmp, data, index * sizeof(double));
+		memcpy(&tmp[index], &data[index], (length - index - 1) * sizeof(double));
+		delete[]data;
+		data = tmp;
+		length--;
+	}
+
+//clearing method
+	void clear()
+	{
+		length = 0;
+		delete[] data;
+		data = nullptr;
+	}
+
+//swapping elements
+	void swap(const unsigned int& id_1, const unsigned int& id_2)
+	{
+		double tmp = data[id_1];
+		data[id_1] = data[id_2];
+		data[id_2] = tmp;
+	}
 //this is a method for showing all contained elements
 	void show(bool mode=true)
 	{
